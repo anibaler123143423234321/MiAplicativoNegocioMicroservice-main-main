@@ -1,0 +1,150 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:background="#114C84"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:layout_alignParentTop="true"/>
+
+        <!-- Agrega un RecyclerView para mostrar la lista de compras -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCompras"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:layout_marginTop="0dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/recyclerViewCompras"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/txtProductoId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Codigo del Producto: "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtNombreProducto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre de Producto: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/txtPrecioProducto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Precio: $0.00"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/txtStockProducto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stock: 0"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"/>
+
+            <ImageView
+                android:id="@+id/imgProducto"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"/>
+
+            <EditText
+                android:id="@+id/edtCantidadDeseada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cantidad Deseada"
+                android:inputType="number"
+                android:layout_marginTop="5dp"/>
+
+            <!-- Encabezado para el tipo de Envío -->
+            <TextView
+                android:id="@+id/txtTipoEnvio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Escoge el tipo de Envío:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroupEnvio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioRecojoPresencial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recojo Presencial" />
+
+                <RadioButton
+                    android:id="@+id/radioDelivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delivery" />
+            </RadioGroup>
+
+            <!-- Encabezado para el tipo de Pago -->
+            <TextView
+                android:id="@+id/txtTipoPago"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Escoge el Tipo de Pago:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroupPago"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioPagoVirtual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pago Virtual" />
+
+                <RadioButton
+                    android:id="@+id/radioPagoPresencial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pago Presencial" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btnConfirmarCompra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmar Compra"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

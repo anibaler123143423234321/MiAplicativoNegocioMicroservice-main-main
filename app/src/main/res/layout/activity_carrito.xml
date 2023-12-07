@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.CarritoActivity">
+
+<com.google.android.material.appbar.AppBarLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+<com.google.android.material.appbar.CollapsingToolbarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:contentScrim="?attr/colorPrimary"
+    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#114C84"
+        android:elevation="4dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <!-- Botón para regresar a LoginActivity -->
+        <ImageButton
+            android:id="@+id/btnBackToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="Regresar a Login"
+            android:padding="8dp"
+            android:src="@drawable/ic_volver_atras" />
+    </androidx.appcompat.widget.Toolbar>
+</com.google.android.material.appbar.CollapsingToolbarLayout>
+</com.google.android.material.appbar.AppBarLayout>
+
+<androidx.recyclerview.widget.RecyclerView
+android:id="@+id/recyclerViewCarrito"
+android:layout_width="match_parent"
+android:layout_height="0dp"
+android:layout_weight="1"
+app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <Spinner
+        android:id="@+id/spinnerTipoEnvio"
+        style="@style/SpinnerStyle" />
+
+    <Spinner
+        android:id="@+id/spinnerTipoDePago"
+        style="@style/SpinnerStyle" />
+
+
+    <!-- Estilo para el TextView del Total de Compra
+<TextView
+android:id="@+id/txtTotalCompra"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Total de Compra: $0.00"
+style="@style/TextAppearance.AppCompat.Body1" />  -->
+
+    <!-- Estilo para el botón de Confirmar Compra -->
+<Button
+android:id="@+id/btnConfirmarCompra"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Confirmar Compra"
+style="@style/Widget.AppCompat.Button" />
+    </LinearLayout>

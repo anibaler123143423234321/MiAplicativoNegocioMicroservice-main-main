@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value="@string/default_notification_channel_id" />
+    <meta-data
+        android:name="firebase_messaging_auto_init_enabled"
+        android:value="false" />
+    <meta-data
+        android:name="firebase_analytics_collection_enabled"
+        android:value="false" />
+
+    <application
+        android:icon="@drawable/altoque"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MiAplicativoNegocioMicroservice">
+
+
+        <activity
+            android:name=".activity.NegociosActivity">
+        </activity>
+
+        <activity
+            android:name=".activity.EntradaActivity">
+        </activity>
+
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
+        <activity
+            android:name=".activity.ComprarActivity">
+        </activity>
+
+        <activity
+            android:name=".activity.CategoriaProductosActivity"
+            android:label="Categoría de Productos">
+        </activity>
+
+
+
+        <activity android:name=".activity.ActivityMiPerfil.InvitarAmigos">
+                <!-- Intent filters and other activity attributes go here -->
+        </activity>
+        <activity android:name=".activity.ActivityMiPerfil.AyudaLinea">
+            <!-- Intent filters and other activity attributes go here -->
+        </activity>
+        <activity android:name=".activity.ActivityMiPerfil.InformacionLegal">
+            <!-- Intent filters and other activity attributes go here -->
+        </activity>
+        <activity android:name=".activity.ActivityMiPerfil.LibroReclamaciones">
+            <!-- Intent filters and other activity attributes go here -->
+        </activity>
+        <activity android:name=".activity.ActivityMiPerfil.RegistrarNegocio">
+            <!-- Intent filters and other activity attributes go here -->
+        </activity>
+
+
+        <activity
+            android:name=".activity.CarritoActivity"
+            android:label="Carrito de Compras">
+        </activity>
+
+        <activity
+            android:name=".activity.CarritoActivityEntrada"
+            android:label="Carrito de Compras">
+        </activity>
+
+        <!-- Actividad de inicio de sesión (LoginActivity) -->
+        <activity
+            android:name=".activity.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.LoginActivity">
+        </activity>
+
+        <activity android:name=".activity.EnviarEmailRecover">
+            <!-- Intent filters and other activity attributes go here -->
+        </activity>
+
+        <service android:name=".activity.notificaciones.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <!-- Configuración de FileProvider para acceso a archivos -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.dagnerchuman.miaplicativonegociomicroservice.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+</manifest>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#114C84"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ImageView para el botón de retroceso -->
+    <ImageView
+        android:id="@+id/imageViewBackUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_revert"
+        android:contentDescription="Botón de Retroceso"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <!-- Contenedor para la imagen de perfil y datos -->
+    <LinearLayout
+        android:id="@+id/containerProfileAndData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical">
+
+        <FrameLayout
+            android:id="@+id/frameLayoutProfile"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="26dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageViewUserProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Imagen de Usuario" />
+
+        </FrameLayout>
+
+        <!-- Datos del usuario (lado derecho) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewNombreApellido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!-- Texto de configuración a la izquierda -->
+    <TextView
+        android:id="@+id/textViewConfiguracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configuración..."
+        app:layout_constraintTop_toBottomOf="@+id/containerProfileAndData"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/containerProfileAndData"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Botones -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/textViewConfiguracion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/containerProfileAndData">
+
+        <!-- Información Legal -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonInformacionLegal"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Información legal"
+            android:gravity="start|bottom"
+            android:paddingBottom="4dp"
+            android:drawableLeft="@android:drawable/ic_menu_info_details"
+            android:drawablePadding="8dp" />
+
+        <!-- Registrar mi Negocio -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonRegistrarNegocio"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar mi negocio"
+            android:gravity="start|bottom"
+            android:paddingBottom="4dp"
+            android:drawableLeft="@android:drawable/ic_menu_edit"
+            android:drawablePadding="8dp" />
+
+        <!-- Libro de Reclamaciones -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLibroReclamaciones"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Libro de reclamaciones"
+            android:gravity="start|bottom"
+            android:paddingBottom="4dp"
+            android:drawableLeft="@drawable/ic_reclamacion"
+            android:drawablePadding="8dp"/>
+
+
+
+        <!-- Invitar Amigos -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonInvitarAmigos"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Invitar amigos"
+            android:gravity="start|bottom"
+            android:paddingBottom="4dp"
+            android:drawableLeft="@android:drawable/ic_menu_send"
+            android:drawablePadding="8dp" />
+
+        <!-- Ayuda en Línea -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonAyudaEnLinea"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ayuda en Línea"
+            android:gravity="start|bottom"
+            android:paddingBottom="4dp"
+            android:drawableLeft="@android:drawable/ic_menu_help"
+            android:drawablePadding="8dp" />
+
+        <!-- Cerrar Sesión -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonCerrarSesion"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cerrar Sesión"
+            android:gravity="start|bottom"
+            android:paddingBottom="4dp"
+            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+            android:drawablePadding="8dp" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,33 @@
+<!-- bg_spinner.xml -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Fondo del Spinner -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+            <corners android:radius="4dp" /> <!-- Radio para las esquinas -->
+            <stroke android:color="#BDBDBD" android:width="1dp" /> <!-- Color y ancho del borde -->
+        </shape>
+    </item>
+
+    <!-- Flecha del Spinner -->
+    <item android:right="8dp">
+        <layer-list>
+            <item>
+                <!-- Utiliza el ícono de flecha hacia abajo estándar de Android -->
+                <vector
+                    android:width="24dp"
+                    android:height="24dp"
+                    android:viewportWidth="24.0"
+                    android:viewportHeight="24.0"
+                    android:tint="#000000">
+                    <path
+                        android:fillColor="#000000"
+                        android:pathData="M7 10l5 5 5-5z" />
+                </vector>
+            </item>
+        </layer-list>
+    </item>
+
+</layer-list>

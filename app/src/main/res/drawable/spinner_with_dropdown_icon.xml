@@ -1,0 +1,8 @@
+<!-- res/drawable/spinner_with_dropdown_icon.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/border" /> <!-- Fondo del Spinner -->
+    <item
+        android:drawable="@drawable/ic_desplegar_abajo"
+        android:gravity="end|center_vertical"
+        android:right="16dp" /> <!-- Icono de despliegue a la derecha del Spinner -->
+</layer-list>

@@ -1,0 +1,56 @@
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Otros atributos de estilo de tu aplicación -->
+        <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.Button.OutlinedButton</item>
+
+    </style>
+
+    <!-- Define el estilo para el cuadro de diálogo personalizado -->
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/custom_dialog_background</item>
+    </style>
+
+    <style name="TextLabel">
+        <item name="android:textColor">#000000</item>
+        <!-- Otros atributos de estilo, si los tienes -->
+    </style>
+
+    <style name="SearchViewStyle">
+        <!-- Cambia el color del texto de la consulta -->
+        <item name="android:textColor">#000</item>
+        <!-- Cambia el tamaño del texto de la consulta -->
+        <item name="android:textSize">18sp</item>
+        <!-- Cambia el color del ícono de búsqueda -->
+        <item name="queryBackground">@android:color/white</item>
+        <!-- Cambia el hint (texto de sugerencia) -->
+        <item name="android:queryHint">Busca tu producto!</item>
+    </style>
+
+    <style name="SpinnerStyle">
+        <item name="android:background">@drawable/background_circular</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="MyHintTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:textSize">14sp</item>
+        <!-- Otros atributos de estilo del texto del hint -->
+    </style>
+
+    <style name="MySpinnerTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeColor">#000000</item> <!-- Color del borde -->
+        <item name="boxStrokeWidth">2dp</item> <!-- Ancho del borde -->
+        <!-- Otros atributos de estilo según sea necesario -->
+    </style>
+
+    <style name="MyOutlinedButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="strokeColor">@android:color/white</item> <!-- Color del borde blanco -->
+        <item name="android:textColor">@android:color/white</item> <!-- Color del texto blanco -->
+    </style>
+
+</resources>

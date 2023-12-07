@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1036953496333",
+    "project_id": "dotval-app",
+    "storage_bucket": "dotval-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036953496333:android:19565c9fb264696680de44",
+        "android_client_info": {
+          "package_name": "com.dagnerchuman.miaplicativonegociomicroservice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd_ZR2bhNpVlcsWTCZVh2q4rOqRfqu0xI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

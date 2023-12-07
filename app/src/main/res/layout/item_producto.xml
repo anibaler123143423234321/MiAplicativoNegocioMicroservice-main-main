@@ -1,0 +1,109 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Imagen del Producto -->
+    <ImageView
+        android:id="@+id/imgProducto"
+        android:layout_width="143dp"
+        android:layout_height="62dp"
+        android:layout_gravity="center"
+        android:contentDescription="Imagen del producto"
+        android:src="@drawable/ic_documento" />
+
+    <!-- Título: Nombre del Producto -->
+    <TextView
+        android:id="@+id/txtTituloNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre del Producto"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Nombre del Producto -->
+    <TextView
+        android:id="@+id/txtNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre del producto dinámico"
+        android:textSize="12sp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp" />
+
+    <!-- Título: Precio del Producto -->
+    <TextView
+        android:id="@+id/txtTituloPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Precio del Producto"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Precio del Producto -->
+    <TextView
+        android:id="@+id/txtPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Precio del producto dinámico"
+        android:textSize="12sp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp" />
+
+    <!-- Título: Stock del Producto -->
+    <TextView
+        android:id="@+id/txtTituloStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stock del Producto"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Stock del Producto -->
+    <TextView
+        android:id="@+id/txtStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stock del producto dinámico"
+        android:textSize="12sp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp" />
+
+    <!-- Línea separadora superior -->
+
+    <!-- Botones en un LinearLayout horizontal -->
+    <LinearLayout
+        android:layout_width="224dp"
+        android:layout_height="29dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnComprar"
+            android:layout_width="97dp"
+            android:layout_height="35dp"
+            android:text="Comprar"
+            android:textSize="12sp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"/>
+
+        <Button
+            android:id="@+id/btnAnadirCarritoE"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_add_shop"
+            android:contentDescription="Botón para comprar el producto"
+            android:textSize="12sp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"/>
+
+    </LinearLayout>
+
+    <!-- Línea separadora inferior -->
+    <View
+        android:layout_width="272dp"
+        android:layout_height="5dp"
+        android:background="#C0C0C0" />
+</LinearLayout>

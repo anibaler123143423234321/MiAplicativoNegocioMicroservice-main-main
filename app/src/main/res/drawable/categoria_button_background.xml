@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/categoria_button_background.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <!-- Agregar espacio entre los botones -->
+            <item android:left="8dp" android:right="8dp">
+                <shape>
+                    <solid android:color="#FFAABBCC" />
+                </shape>
+            </item>
+            <!-- Definir el efecto explosivo cuando se presiona -->
+            <item android:drawable="@android:drawable/btn_default" />
+        </layer-list>
+    </item>
+    <item>
+        <layer-list>
+            <!-- Agregar espacio entre los botones -->
+            <item android:left="8dp" android:right="8dp">
+                <shape>
+                    <solid android:color="#FF99CCFF" />
+                </shape>
+            </item>
+            <!-- Definir el efecto explosivo cuando no se presiona -->
+            <item android:drawable="@android:drawable/btn_default" />
+        </layer-list>
+    </item>
+</selector>
+

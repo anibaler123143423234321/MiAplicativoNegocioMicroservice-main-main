@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo de color plomo -->
+    <item android:drawable="@android:color/darker_gray" />
+
+    <!-- Icono de cámara -->
+    <item
+        android:drawable="@drawable/ic_camara"
+        android:gravity="center"
+    android:viewportWidth="24"
+    android:viewportHeight="24" />
+</layer-list>

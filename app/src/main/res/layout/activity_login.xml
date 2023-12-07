@@ -1,0 +1,139 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".activity.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/topAnimationView"
+            android:layout_width="264dp"
+            android:layout_height="234dp"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayoutEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/animation_lnygeelq" />
+
+
+
+
+
+        <!-- Aquí se ha actualizado el TextView de bienvenida -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/san_francisco"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center|center_horizontal"
+            android:text="@string/label_bienvenida"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/label_usuario"
+            app:hintTextAppearance="@style/TextLabel"
+            app:boxStrokeColor="#0077C0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="#000" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPassword"
+            android:layout_width="match_parent"
+            android:hint="@string/label_password"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextLabel"
+            app:boxStrokeColor="#0077C0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="#000" />
+
+            <ImageView
+                android:id="@+id/togglePasswordVisibility"
+                android:layout_width="24dp"
+                android:layout_height="32dp"
+                android:contentDescription="Alternar visibilidad de la contraseña"
+                android:src="@drawable/ic_eye" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/buttonSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+        android:background="#0077C0"
+            android:textColor="#fff"
+            android:text="Iniciar Sesión"
+            android:drawableEnd="@drawable/ic_login"/>
+
+
+        <Button
+            android:id="@+id/buttonSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+        android:background="#0077C0"
+            android:textColor="#fff"
+            android:text="Registrarse"
+            android:onClick="onClickSignUp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonForgotPassword"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Recuperar Contraseña"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"
+            android:backgroundTint="@android:color/white"
+            app:strokeColor="@android:color/white"
+            app:cornerRadius="2dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="end"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:onClick="onClickForgotPassword"/>
+
+
+
+
+
+    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
