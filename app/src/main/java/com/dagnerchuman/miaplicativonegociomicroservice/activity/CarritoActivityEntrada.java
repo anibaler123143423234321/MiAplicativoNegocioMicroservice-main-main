@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -78,6 +79,22 @@ public class CarritoActivityEntrada extends AppCompatActivity {
         ArrayAdapter<CharSequence> tipoPagoAdapter = ArrayAdapter.createFromResource(this, R.array.tipo_pago_array, android.R.layout.simple_spinner_item);
         tipoPagoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTipoDePago.setAdapter(tipoPagoAdapter);
+
+        spinnerTipoEnvio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                String selectedTipoEnvio = (String) adapterView.getItemAtPosition(position);
+                if ("Delivery".equals(selectedTipoEnvio)) {
+                    // Muestra el SweetAlert al seleccionar "Delivery"
+                    mostrarSweetAlertDeliveryOnInit();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // No es necesario implementar esta parte si no se requiere
+            }
+        });
 
         btnBackToLogin = findViewById(R.id.btnBackToLogin);
         btnBackToLogin.setOnClickListener(new View.OnClickListener() {
@@ -334,6 +351,21 @@ public class CarritoActivityEntrada extends AppCompatActivity {
         carritoAdapter.notifyDataSetChanged();
     }
 
-
+    private void mostrarSweetAlertDeliveryOnInit() {
+        new SweetAlertDialog(CarritoActivityEntrada.this, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Costo adicional por Delivery")
+                .setContentText("El envío por Delivery tiene un costo adicional de 2 soles. ¿Deseas continuar?")
+                .setConfirmText("Sí")
+                .setCancelText("No")
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    // Agrega aquí la lógica para continuar con la compra y aplicar el costo adicional
+                    sweetAlertDialog.dismissWithAnimation();
+                })
+                .setCancelClickListener(sweetAlertDialog -> {
+                    // Agrega aquí la lógica para cancelar la compra o realizar alguna acción
+                    sweetAlertDialog.dismissWithAnimation();
+                })
+                .show();
+    }
 
 }

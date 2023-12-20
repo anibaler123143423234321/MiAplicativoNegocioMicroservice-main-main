@@ -69,10 +69,9 @@
         <item>Kañaris</item>
     </string-array>
 
-
         <string-array name="tipo_envio_array">
-            <item>Delivery</item>
             <item>Envio Presencial</item>
+            <item>Delivery</item>
             <!-- Agrega más elementos según sea necesario -->
         </string-array>
 

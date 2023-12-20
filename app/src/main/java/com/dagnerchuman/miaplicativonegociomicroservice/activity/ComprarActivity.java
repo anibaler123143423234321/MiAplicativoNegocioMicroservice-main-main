@@ -144,6 +144,32 @@ public class ComprarActivity extends AppCompatActivity implements CompraAdapter.
         apiServiceProductos = ConfigApi.getInstanceProducto(this);
         apiServiceNegocio = ConfigApi.getInstanceNegocio(this);
 
+        // Dentro de tu método initView() o donde configures tus vistas
+        radioGroupEnvio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId);
+                String selectedOption = radioButton != null ? radioButton.getText().toString() : "";
+
+                if ("Delivery".equals(selectedOption)) {
+                    mostrarSweetAlertCostoDelivery();
+                }
+            }
+        });
+
+    }
+
+    // Método para mostrar el SweetAlert cuando se selecciona "Delivery"
+    private void mostrarSweetAlertCostoDelivery() {
+        new SweetAlertDialog(ComprarActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Costo Adicional por Delivery")
+                .setContentText("El servicio de Delivery tiene un costo adicional de 2 soles.")
+                .setConfirmText("Entendido")
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    // Lógica a ejecutar después de hacer clic en "Entendido" (si es necesario)
+                    sweetAlertDialog.dismissWithAnimation();
+                })
+                .show();
     }
 
     private void mostrarDetallesDelProducto(Long userId, Long productoId, String nombreProducto, double precioProducto, int stockProducto, String imagenProducto) {
