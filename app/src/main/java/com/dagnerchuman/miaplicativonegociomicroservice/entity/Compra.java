@@ -19,7 +19,19 @@ public class Compra implements Serializable {
 
     private String urlBoleta;
 
-    // Constructor, getters y setters
+
+    private Double cargoDelivery;
+
+    public Double getCargoDelivery() {
+        return cargoDelivery;
+    }
+
+    public void setCargoDelivery(Double cargoDelivery) {
+        this.cargoDelivery = cargoDelivery;
+    }
+
+
+// Constructor, getters y setters
 
     public String getUrlBoleta() {
         return urlBoleta;

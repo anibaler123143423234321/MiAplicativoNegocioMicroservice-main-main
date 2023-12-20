@@ -14,7 +14,13 @@
         <item name="android:textColor">#000000</item>
         <!-- Otros atributos de estilo, si los tienes -->
     </style>
-
+    <!-- Estilo para los botones del SweetAlertDialog -->
+    <style name="SweetAlertDialogButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item> <!-- Tamaño del texto de los botones -->
+        <item name="android:padding">16dp</item> <!-- Relleno de los botones -->
+    </style>
     <style name="SearchViewStyle">
         <!-- Cambia el color del texto de la consulta -->
         <item name="android:textColor">#000</item>

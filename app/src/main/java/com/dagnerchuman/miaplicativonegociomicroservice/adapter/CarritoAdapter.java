@@ -65,11 +65,10 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
 
                     // Calcula el nuevo precio multiplicando el precio original por la cantidad deseada
                     double nuevoPrecio = precioOriginal * nuevaCantidad;
-                    holder.txtTotalProducto.setText("$" + nuevoPrecio);
-
                     // Actualiza el total del producto si es necesario
                     double nuevoTotal = producto.getPrecio();
-                    holder.txtPrecioProducto.setText("Precio del Producto: $" + nuevoTotal);
+                    holder.txtTotalProducto.setText("$" + nuevoTotal);
+                    holder.txtPrecioProducto.setText("Precio del Producto: $" + nuevoPrecio);
                 }
             }
         });
@@ -88,11 +87,10 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
 
                         // Calcula el nuevo precio multiplicando el precio original por la cantidad deseada
                         double nuevoPrecio = precioOriginal * nuevaCantidad;
-                        holder.txtTotalProducto.setText("$" + nuevoPrecio);
-
                         // Actualiza el total del producto si es necesario
                         double nuevoTotal = producto.getPrecio();
-                        holder.txtPrecioProducto.setText("Precio del Producto: $" + nuevoTotal);
+                        holder.txtTotalProducto.setText("$" + nuevoTotal);
+                        holder.txtPrecioProducto.setText("Precio del Producto: $" + nuevoPrecio);
                     }
                 }
             }

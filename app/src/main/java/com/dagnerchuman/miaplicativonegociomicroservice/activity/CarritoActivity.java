@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,12 +54,20 @@ public class CarritoActivity extends AppCompatActivity {
     private ApiServiceNegocio apiServiceNegocio;
     private boolean seRealizoUnaCompra = false;
 
+    private boolean cargoAplicado = false;
+    private static final double CARGO_DELIVERY = 2.0; // Definir el costo adicional por delivery
+    private static final String PREFS_NAME = "CarritoActivityPrefs";
+    private static final String CARGO_APLICADO_KEY = "CargoAplicado";
+    // Agrega una variable booleana para rastrear si el cargo por delivery ya se aplicó
+    private boolean cargoDeliveryAplicado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrito);
-
+        // Recupera el estado de cargoAplicado desde SharedPreferences
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        cargoAplicado = prefs.getBoolean(CARGO_APLICADO_KEY, false);
         if (!productosCargados) {
             // Solo carga los productos desde Intent la primera vez que se inicia la actividad
             productosEnCarrito = (List<Producto>) getIntent().getSerializableExtra("productosEnCarrito");
@@ -97,6 +106,7 @@ public class CarritoActivity extends AppCompatActivity {
                 // No es necesario implementar esta parte si no se requiere
             }
         });
+
 
 // ...
         btnBackToLogin = findViewById(R.id.btnBackToLogin);
@@ -145,18 +155,38 @@ public class CarritoActivity extends AppCompatActivity {
                 if (productosEnCarrito != null && !productosEnCarrito.isEmpty()) {
                     String tipoEnvio = spinnerTipoEnvio.getSelectedItem().toString();
                     String tipoDePago = spinnerTipoDePago.getSelectedItem().toString();
+
                     int totalCompras = productosEnCarrito.size();
-                    final int[] comprasExitosas = {0}; // Variable final para contar compras exitosas
+                    final int[] comprasExitosas = {0};
+
+                    // Variable para rastrear si se ha aplicado el cargo por delivery
+                    boolean cargoDeliveryAplicado = false;
 
                     for (int i = 0; i < totalCompras; i++) {
                         Producto producto = productosEnCarrito.get(i);
-                        int cantidadDeseada = cantidadesDeseadas.get(i);
+                        // Obtén la cantidad deseada del adaptador en lugar de usar la lista cantidadesDeseadas
+                        int cantidadDeseada = carritoAdapter.getCantidadDeseada(i);
+
+                        // Obtiene el TextView txtTotalProducto del ViewHolder
+                        TextView txtTotalProducto = recyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.txtTotalProducto);
+                        String precioProductoString = txtTotalProducto.getText().toString();
+
+                        // Convierte el precioProductoString a double
+                        double precioProducto = Double.parseDouble(precioProductoString.replaceAll("[^\\d.]+", ""));
+
+                        // Aplica el cargo por delivery solo al primer producto del carrito y si no se ha aplicado antes
+                        if ("Delivery".equals(tipoEnvio) && !cargoDeliveryAplicado && i == 0) {
+                            double cargoPorDelivery = CARGO_DELIVERY / cantidadDeseada;
+                            precioProducto += cargoPorDelivery;
+                            cargoDeliveryAplicado = true;
+                        }
 
                         Compra compra = new Compra();
                         compra.setUserId(userId);
                         compra.setProductoId(producto.getId());
                         compra.setTitulo(producto.getNombre());
-                        compra.setPrecioCompra(producto.getPrecio());
+                        compra.setPrecioCompra(precioProducto); // Usa el precio de compra actualizado
+
                         compra.setTipoEnvio(tipoEnvio);
                         compra.setTipoDePago(tipoDePago);
                         compra.setCantidad(cantidadDeseada);
@@ -170,7 +200,6 @@ public class CarritoActivity extends AppCompatActivity {
                                     Producto productoActualizado = response.body();
                                     int stockDisponible = productoActualizado.getStock();
 
-                                    // Verificar si la cantidad deseada es menor o igual al stock disponible
                                     if (cantidadDeseada <= stockDisponible) {
                                         Call<Compra> compraCall = apiServiceCompras.saveCompra(compra);
 
@@ -178,10 +207,8 @@ public class CarritoActivity extends AppCompatActivity {
                                             @Override
                                             public void onResponse(Call<Compra> call, Response<Compra> response) {
                                                 if (response.isSuccessful()) {
-                                                    // Compra exitosa
                                                     comprasExitosas[0]++;
 
-                                                    // Actualizar el stock del producto
                                                     productoActualizado.setStock(stockDisponible - cantidadDeseada);
                                                     Call<Producto> updateCall = apiServiceProductos.actualizarProducto(producto.getId(), productoActualizado);
 
@@ -189,7 +216,7 @@ public class CarritoActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onResponse(Call<Producto> call, Response<Producto> response) {
                                                             if (response.isSuccessful()) {
-                                                                // El stock del producto se ha actualizado con éxito
+                                                                // Manejar la actualización del producto si es necesario
                                                             } else {
                                                                 // Manejar errores en la actualización del producto
                                                             }
@@ -201,58 +228,45 @@ public class CarritoActivity extends AppCompatActivity {
                                                         }
                                                     });
 
-                                                    // Si todas las compras son exitosas, muestra el SweetAlert
                                                     if (comprasExitosas[0] == totalCompras) {
-                                                        progressDialog.dismiss(); // Ocultar el diálogo de carga
+                                                        progressDialog.dismiss();
                                                         mostrarSweetAlert();
-
-                                                        // Establece la bandera seRealizoUnaCompra en true
                                                         seRealizoUnaCompra = true;
                                                     }
-
-
                                                 } else {
-                                                    progressDialog.dismiss(); // Ocultar el diálogo de carga
-                                                    // Manejar errores en la compra
+                                                    progressDialog.dismiss();
                                                     Toast.makeText(CarritoActivity.this, "Error al realizar la compra", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
 
                                             @Override
                                             public void onFailure(Call<Compra> call, Throwable t) {
-                                                // Manejar errores en la llamada de compra
-                                                progressDialog.dismiss(); // Ocultar el diálogo de carga
+                                                progressDialog.dismiss();
                                                 Toast.makeText(CarritoActivity.this, "Error al realizar la compra", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     } else {
-                                        // Manejar errores cuando la cantidad deseada supera el stock
-                                        progressDialog.dismiss(); // Ocultar el diálogo de carga
+                                        progressDialog.dismiss();
                                         Toast.makeText(CarritoActivity.this, "La cantidad deseada para '" + producto.getNombre() + "' supera el stock actual (" + stockDisponible + ")", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    // Manejar errores al obtener el stock del producto
-                                    progressDialog.dismiss(); // Ocultar el diálogo de carga
+                                    progressDialog.dismiss();
                                     Toast.makeText(CarritoActivity.this, "Error al obtener el stock del producto", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Producto> call, Throwable t) {
-                                // Manejar errores en la llamada para obtener el stock del producto
-                                progressDialog.dismiss(); // Ocultar el diálogo de carga
+                                progressDialog.dismiss();
                                 Toast.makeText(CarritoActivity.this, "Error al obtener el stock del producto", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 } else {
-                    // Manejar errores cuando el carrito está vacío
-                    progressDialog.dismiss(); // Ocultar el diálogo de carga
+                    progressDialog.dismiss();
                     Toast.makeText(CarritoActivity.this, "El carrito está vacío", Toast.LENGTH_SHORT).show();
                 }
             }
-
-// Resto de tu código...
 
             private void mostrarSweetAlert() {
                 new SweetAlertDialog(CarritoActivity.this, SweetAlertDialog.NORMAL_TYPE)
@@ -362,9 +376,9 @@ public class CarritoActivity extends AppCompatActivity {
     private void mostrarSweetAlertDeliveryOnInit() {
         new SweetAlertDialog(CarritoActivity.this, SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText("Costo adicional por Delivery")
-                .setContentText("El envío por Delivery tiene un costo adicional de 2 soles. ¿Deseas continuar?")
+                .setContentText("El envío por Delivery tiene un costo adicional de 2 soles. ¿Deseas continuar?¿Si es No, porfavor cambía de opción?")
                 .setConfirmText("Sí")
-                .setCancelText("No")
+                .setCancelText("No?")
                 .setConfirmClickListener(sweetAlertDialog -> {
                     // Agrega aquí la lógica para continuar con la compra y aplicar el costo adicional
                     sweetAlertDialog.dismissWithAnimation();
