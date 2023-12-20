@@ -44,8 +44,10 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
     @Override
     public void onBindViewHolder(@NonNull CarritoViewHolder holder, int position) {
         Producto producto = productosEnCarrito.get(position);
+        double precioOriginal = producto.getPrecio();
+
         holder.txtNombreProducto.setText(producto.getNombre());
-        holder.txtPrecioProducto.setText("$" + producto.getPrecio());
+        holder.txtPrecioProducto.setText("$" + precioOriginal);
         Picasso.get().load(producto.getPicture()).into(holder.imgProducto);
 
         int cantidadDeseada = cantidadesDeseadas.get(position);
@@ -60,9 +62,14 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
                     int nuevaCantidad = cantidadesDeseadas.get(newPosition) + 1;
                     cantidadesDeseadas.set(newPosition, nuevaCantidad);
                     holder.txtCantidad.setText(String.valueOf(nuevaCantidad));
+
+                    // Calcula el nuevo precio multiplicando el precio original por la cantidad deseada
+                    double nuevoPrecio = precioOriginal * nuevaCantidad;
+                    holder.txtTotalProducto.setText("$" + nuevoPrecio);
+
                     // Actualiza el total del producto si es necesario
-                    double nuevoTotal = producto.getPrecio() * nuevaCantidad;
-                    holder.txtTotalProducto.setText("Total: $" + nuevoTotal);
+                    double nuevoTotal = producto.getPrecio();
+                    holder.txtPrecioProducto.setText("Precio del Producto: $" + nuevoTotal);
                 }
             }
         });
@@ -78,9 +85,14 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
                         int nuevaCantidad = cantidadDeseada - 1;
                         cantidadesDeseadas.set(newPosition, nuevaCantidad);
                         holder.txtCantidad.setText(String.valueOf(nuevaCantidad));
+
+                        // Calcula el nuevo precio multiplicando el precio original por la cantidad deseada
+                        double nuevoPrecio = precioOriginal * nuevaCantidad;
+                        holder.txtTotalProducto.setText("$" + nuevoPrecio);
+
                         // Actualiza el total del producto si es necesario
-                        double nuevoTotal = producto.getPrecio() * nuevaCantidad;
-                        holder.txtTotalProducto.setText("Total: $" + nuevoTotal);
+                        double nuevoTotal = producto.getPrecio();
+                        holder.txtPrecioProducto.setText("Precio del Producto: $" + nuevoTotal);
                     }
                 }
             }

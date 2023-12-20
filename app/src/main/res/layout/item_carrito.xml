@@ -56,7 +56,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtTotalProducto"
+            android:id="@+id/txtPrecioProducto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$0.00"
@@ -70,7 +70,7 @@
         android:src="@drawable/ic_borrar" />
 
 <TextView
-android:id="@+id/txtPrecioProducto"
+android:id="@+id/txtTotalProducto"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="$0.00"

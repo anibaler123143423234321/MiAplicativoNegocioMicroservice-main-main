@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -140,18 +141,23 @@ public class CarritoActivityEntrada extends AppCompatActivity {
                 if (productosEnCarrito != null && !productosEnCarrito.isEmpty()) {
                     String tipoEnvio = spinnerTipoEnvio.getSelectedItem().toString();
                     String tipoDePago = spinnerTipoDePago.getSelectedItem().toString();
+
                     int totalCompras = productosEnCarrito.size();
                     final int[] comprasExitosas = {0}; // Variable final para contar compras exitosas
 
                     for (int i = 0; i < totalCompras; i++) {
                         Producto producto = productosEnCarrito.get(i);
                         int cantidadDeseada = cantidadesDeseadas.get(i);
-
+                        // Obtiene el TextView correspondiente a la posición actual
+                        TextView txtTotalProducto = recyclerView.findViewHolderForAdapterPosition(i).itemView.findViewById(R.id.txtTotalProducto);
+                        // Obtiene el valor del TextView y lo convierte a un número
+                        String precioProductoString = txtTotalProducto.getText().toString();
+                        double precioProducto = Double.parseDouble(precioProductoString.replaceAll("[^\\d.]+", ""));
                         Compra compra = new Compra();
                         compra.setUserId(userId);
                         compra.setProductoId(producto.getId());
                         compra.setTitulo(producto.getNombre());
-                        compra.setPrecioCompra(producto.getPrecio());
+                        compra.setPrecioCompra(precioProducto);
                         compra.setTipoEnvio(tipoEnvio);
                         compra.setTipoDePago(tipoDePago);
                         compra.setCantidad(cantidadDeseada);
