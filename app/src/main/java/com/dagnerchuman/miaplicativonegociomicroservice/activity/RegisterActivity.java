@@ -1,6 +1,7 @@
 package com.dagnerchuman.miaplicativonegociomicroservice.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,9 +19,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,11 +45,20 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,6 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String dispositivoId;
 
 
+
     // Define una interfaz para la API de consulta de DNI
     public interface ApiServiceDni {
         @GET("dni/{dni}")
@@ -124,6 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
         textInputLayoutUsername = findViewById(R.id.textInputLayoutUsername);
         textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
 
+
         editTextNombre = findViewById(R.id.editTextNombre);
         editTextApellido = findViewById(R.id.editTextApellido);
         editTextTelefono = findViewById(R.id.editTextTelefono);
@@ -137,6 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
         spinnerProvincia = findViewById(R.id.spinnerProvincia);
         spinnerDistrito = findViewById(R.id.spinnerDistrito);
         imageViewSelected = findViewById(R.id.imageViewSelected);
+
 
 
         // Configura el evento click para el botón "Seleccionar Imagen"

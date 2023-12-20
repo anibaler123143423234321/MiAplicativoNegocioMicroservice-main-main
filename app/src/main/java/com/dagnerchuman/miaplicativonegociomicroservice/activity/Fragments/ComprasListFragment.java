@@ -1,7 +1,9 @@
 package com.dagnerchuman.miaplicativonegociomicroservice.activity.Fragments;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,13 +26,13 @@ import com.dagnerchuman.miaplicativonegociomicroservice.adapter.CompraAdapter;
 import com.dagnerchuman.miaplicativonegociomicroservice.api.ApiServiceCompras;
 import com.dagnerchuman.miaplicativonegociomicroservice.api.ConfigApi;
 import com.dagnerchuman.miaplicativonegociomicroservice.entity.Compra;
-import com.itextpdf.io.font.FontConstants;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.TextAlignment;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -127,54 +129,90 @@ public class ComprasListFragment extends Fragment implements CompraAdapter.Bolet
         Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     public void onBoletaDownload(Compra compra) {
-        Long compraId = compra.getId();
+        // Verifica que el estado de la compra sea "Pago Completado" antes de permitir la descarga
+        if (compra.getEstadoCompra().equals("Pago Completado")) {
+            Long compraId = compra.getId();
 
-        // Directorio donde se almacenarán los archivos PDF descargados
-        String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        Log.d("MiApp", "Directorio de descargas: " + directory); // Agregar log
+            // Obtiene el nombre del usuario de SharedPreferences
+            SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserDataUser", Context.MODE_PRIVATE);
+            String userName = sharedPreferences.getString("userName", "");
 
-        String fileName = "compra_" + compra.getId() + ".pdf";
-        String filePath = directory + File.separator + fileName;
-        Log.d("MiApp", "Ruta del archivo PDF: " + filePath); // Agregar log
+            // Configuración del tamaño del documento (ajustado para contenido en una sola hoja)
+            PageSize pageSize = new PageSize(80f, 100f);
 
-        try {
-            // Inicializa el documento PDF con iText
-            PdfWriter pdfWriter = new PdfWriter(filePath);
-            PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-            Document document = new Document(pdfDocument);
+            // Directorio donde se almacenarán los archivos PDF descargados
+            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+            Log.d("MiApp", "Directorio de descargas: " + directory); // Agregar log
 
-            // Agrega contenido al documento
-            PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
-            document.setFont(font);
-            document.add(new Paragraph("Detalles de la Compra: " + compra.getTitulo()));
-            Log.d("MiApp", "Detalles de la Compra: " + compra.getTitulo()); // Agregar log
+            String fileName = "boleta_" + userName + "_" + compraId + ".pdf";
+            String filePath = directory + File.separator + fileName;
+            Log.d("MiApp", "Ruta del archivo PDF: " + filePath); // Agregar log
 
-            document.add(new Paragraph("Fecha de Compra: " + compra.getFechaCompra()));
-            Log.d("MiApp", "Fecha de Compra: " + compra.getFechaCompra()); // Agregar log
+            try {
+                // Inicializa el documento PDF con iText
+                PdfWriter pdfWriter = new PdfWriter(filePath);
+                PdfDocument pdfDocument = new PdfDocument(pdfWriter);
 
-            document.add(new Paragraph("Precio de Compra: " + compra.getPrecioCompra()));
-            Log.d("MiApp", "Precio de Compra: " + compra.getPrecioCompra()); // Agregar log
+                // Utiliza el PageSize al agregar el Document al PdfDocument
+                Document document = new Document(pdfDocument, pageSize);
 
-            // Agrega más detalles de la compra según tus necesidades
+                // Configura la alineación justificada para el texto
+                document.setTextAlignment(TextAlignment.JUSTIFIED);
 
-            // Cierra el documento
-            document.close();
-            Log.d("MiApp", "PDF generado correctamente en: " + filePath); // Agregar log
+                // Ajusta el tamaño de la fuente y los márgenes
+                float fontSize = 3f;  // Tamaño de fuente aún más pequeño
+                document.setFontSize(fontSize);
+                document.setMargins(1, 1, 1, 1);  // Márgenes aún más pequeños
 
-            // Notifica al usuario y abre el PDF descargado
-            Toast.makeText(requireContext(), "Boleta descargada", Toast.LENGTH_SHORT).show();
-            openPdfFile(filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("MiApp", "Error al generar el PDF: " + e.getMessage());
-            Toast.makeText(requireContext(), "Error al generar la boleta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                // Agrega contenido al documento con alineación justificada
+                document.add(new Paragraph("Detalles de la Compra: " + compra.getTitulo()));
+                document.add(new Paragraph("Fecha de Compra: " + compra.getFechaCompra()));
+                document.add(new Paragraph("Precio de Compra: " + compra.getPrecioCompra()));
+
+                // Agrega más detalles de la compra según tus necesidades
+
+                // Cierra el documento
+                document.close();
+                Log.d("MiApp", "PDF generado correctamente en: " + filePath); // Agregar log
+
+                // Notifica al usuario y abre el PDF descargado
+                showSuccessSweetAlert("Boleta descargada", "La boleta se ha descargado correctamente", filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e("MiApp", "Error al generar el PDF: " + e.getMessage());
+                showErrorSweetAlert("Error al generar la boleta", e.getMessage());
+            }
+        } else {
+            // Si el estado no es "Pago Completado", muestra un Sweet Alert indicando que no se puede descargar la boleta con el estado actual de la compra
+            showErrorSweetAlert("No se puede descargar la boleta", "Estado de compra: " + compra.getEstadoCompra());
         }
     }
 
+    private void showSuccessSweetAlert(String title, String content, String filePath) {
+        new SweetAlertDialog(requireContext(), SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText(title)
+                .setContentText(content)
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                        openPdfFile(filePath);
+                    }
+                })
+                .show();
+    }
 
+
+    private void showErrorSweetAlert(String title, String content) {
+        new SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
+                .setTitleText(title)
+                .setContentText(content)
+                .setConfirmText("OK")
+                .show();
+    }
     private void openPdfFile(String filePath) {
         // Abre el archivo PDF utilizando una aplicación de visor de PDF instalada
         File file = new File(filePath);

@@ -142,7 +142,6 @@ public class EntradaFragment extends Fragment implements ProductoAdapter.OnProdu
     private void setupCarritoButton() {
         btnCarrito.setOnTouchListener(new View.OnTouchListener() {
             private float dX, dY;
-            private float startX, startY;
             private boolean isMoving = false;
 
             @Override
@@ -151,8 +150,6 @@ public class EntradaFragment extends Fragment implements ProductoAdapter.OnProdu
                     case MotionEvent.ACTION_DOWN:
                         dX = v.getX() - event.getRawX();
                         dY = v.getY() - event.getRawY();
-                        startX = event.getRawX();
-                        startY = event.getRawY();
                         isMoving = false;
                         break;
 
@@ -160,13 +157,10 @@ public class EntradaFragment extends Fragment implements ProductoAdapter.OnProdu
                         float newX = event.getRawX() + dX;
                         float newY = event.getRawY() + dY;
 
-                        newX = Math.max(0, Math.min(newX, requireActivity().findViewById(R.id.constraintLayoutE).getWidth() - v.getWidth()));
-                        newY = Math.max(0, Math.min(newY, requireActivity().findViewById(R.id.constraintLayoutE).getHeight() - v.getHeight()));
-
                         v.setX(newX);
                         v.setY(newY);
 
-                        if (Math.abs(event.getRawX() - startX) < 5 || Math.abs(event.getRawY() - startY) < 5 ) {
+                        if (Math.abs(event.getRawX() - (v.getWidth() / 2)) > 1200 || Math.abs(event.getRawY() - (v.getHeight() / 2)) > 1200) {
                             isMoving = true;
                         }
                         break;
@@ -183,6 +177,7 @@ public class EntradaFragment extends Fragment implements ProductoAdapter.OnProdu
 
         btnCarrito.setOnClickListener(view -> navigateToCarritoActivity());
     }
+
 
     private void obtenerProductosDelNegocio() {
         ApiServiceProductos apiService = ConfigApi.getInstanceProducto(requireContext());

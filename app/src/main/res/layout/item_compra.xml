@@ -1,4 +1,5 @@
 <!-- res/layout/item_compra.xml -->
+<!-- res/layout/item_compra.xml -->
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -114,7 +115,11 @@
 
         <!-- Agrega más TextViews para otros atributos de Compra aquí -->
 
-        <!-- ... Otros elementos XML ... -->
+        <!-- Agrega un espacio entre los elementos anteriores y el botón -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
         <Button
             android:id="@+id/btnDescargarBoleta"
             android:layout_width="wrap_content"

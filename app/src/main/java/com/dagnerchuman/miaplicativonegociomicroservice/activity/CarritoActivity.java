@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,13 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dagnerchuman.miaplicativonegociomicroservice.R;
 import com.dagnerchuman.miaplicativonegociomicroservice.adapter.CarritoAdapter;
 import com.dagnerchuman.miaplicativonegociomicroservice.api.ApiServiceCompras;
+import com.dagnerchuman.miaplicativonegociomicroservice.api.ApiServiceNegocio;
 import com.dagnerchuman.miaplicativonegociomicroservice.api.ApiServiceProductos;
 import com.dagnerchuman.miaplicativonegociomicroservice.api.ConfigApi;
 import com.dagnerchuman.miaplicativonegociomicroservice.entity.Compra;
+import com.dagnerchuman.miaplicativonegociomicroservice.entity.Negocio;
 import com.dagnerchuman.miaplicativonegociomicroservice.entity.Producto;
+
+import android.net.Uri;  // For Uri
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import cn.pedant.SweetAlert.SweetAlertDialog;  // Assuming this is the library for SweetAlert
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +49,10 @@ public class CarritoActivity extends AppCompatActivity {
     private boolean productosCargados = false; // Bandera para rastrear si los productos ya se han cargado
     private ProgressDialog progressDialog;
 
+    private ApiServiceNegocio apiServiceNegocio;
+    private boolean seRealizoUnaCompra = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +65,7 @@ public class CarritoActivity extends AppCompatActivity {
         }
         apiServiceCompras = ConfigApi.getInstanceCompra(this);
         apiServiceProductos = ConfigApi.getInstanceProducto(this);
+        apiServiceNegocio = ConfigApi.getInstanceNegocio(this);
 
         recyclerView = findViewById(R.id.recyclerViewCarrito);
         carritoAdapter = new CarritoAdapter(this, productosEnCarrito);
@@ -175,14 +186,16 @@ public class CarritoActivity extends AppCompatActivity {
                                                         }
                                                     });
 
-                                                    // Si todas las compras son exitosas, redirige a la actividad de confirmación
+                                                    // Si todas las compras son exitosas, muestra el SweetAlert
                                                     if (comprasExitosas[0] == totalCompras) {
                                                         progressDialog.dismiss(); // Ocultar el diálogo de carga
-                                                        Toast.makeText(CarritoActivity.this, "Todas las compras se realizaron con éxito", Toast.LENGTH_SHORT).show();
-                                                        Intent confirmationIntent = new Intent(CarritoActivity.this, EntradaActivity.class);
-                                                        startActivity(confirmationIntent);
-                                                        finish();
+                                                        mostrarSweetAlert();
+
+                                                        // Establece la bandera seRealizoUnaCompra en true
+                                                        seRealizoUnaCompra = true;
                                                     }
+
+
                                                 } else {
                                                     progressDialog.dismiss(); // Ocultar el diálogo de carga
                                                     // Manejar errores en la compra
@@ -223,5 +236,113 @@ public class CarritoActivity extends AppCompatActivity {
                     Toast.makeText(CarritoActivity.this, "El carrito está vacío", Toast.LENGTH_SHORT).show();
                 }
             }
+
+// Resto de tu código...
+
+            private void mostrarSweetAlert() {
+                new SweetAlertDialog(CarritoActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("¿Quieres avisar al negocio por WhatsApp?")
+                        .setConfirmText("Sí")
+                        .setCancelText("No")
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            // Obtener el número de WhatsApp del negocio
+                            obtenerNumeroWhatsAppNegocio();
+                            sweetAlertDialog.dismissWithAnimation();
+                        })
+                        .setCancelClickListener(sweetAlertDialog -> {
+                            // Si el usuario elige "No", realizar la compra pero no vaciar el carrito
+                            sweetAlertDialog.dismissWithAnimation();
+                            seRealizoUnaCompra = true;
+                        })
+                        .show();
+            }
+
+
+            private void obtenerNumeroWhatsAppNegocio() {
+                // Recuperar el userId desde SharedPreferences
+                SharedPreferences sharedPreferences = getSharedPreferences("UserDataUser", Context.MODE_PRIVATE);
+                Long userNegocioId = sharedPreferences.getLong("userNegocioId", 0L);
+
+                // Llamar al endpoint para obtener el negocio por ID
+                Call<Negocio> negocioCall = apiServiceNegocio.getNegocioById(userNegocioId);
+
+                negocioCall.enqueue(new Callback<Negocio>() {
+                    @Override
+                    public void onResponse(Call<Negocio> call, Response<Negocio> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Negocio negocio = response.body();
+
+                            // Agrega un log para imprimir el número de WhatsApp
+                            Log.d("CarritoActivity", "Número de WhatsApp del negocio: " + negocio.getTelefono());
+
+                            enviarMensajeWhatsApp(negocio.getTelefono());
+                        } else {
+                            // Manejar errores al obtener el negocio
+                            Toast.makeText(CarritoActivity.this, "Error al obtener información del negocio", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Negocio> call, Throwable t) {
+                        // Manejar errores en la llamada para obtener el negocio
+                        Toast.makeText(CarritoActivity.this, "Error al obtener información del negocio", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            private void enviarMensajeWhatsApp(String numeroWhatsApp) {
+                // Agrega un log para imprimir que se está enviando el mensaje
+                Log.d("CarritoActivity", "Enviando mensaje a WhatsApp...");
+
+                // Construye el mensaje con la lista de productos
+                StringBuilder mensaje = new StringBuilder("¡Hola! Acabo de hacer un pedido en tu negocio. Mis productos son:\n");
+
+                for (int i = 0; i < productosEnCarrito.size(); i++) {
+                    Producto producto = productosEnCarrito.get(i);
+                    int cantidad = cantidadesDeseadas.get(i);
+                    mensaje.append(producto.getNombre()).append(" - Cantidad: ").append(cantidad).append("\n");
+                }
+
+                // Agrega el resto del mensaje
+                mensaje.append("\n¿Puedes confirmar mi pedido? Gracias.");
+
+                // Construye la URL de WhatsApp con el número y el mensaje predefinido
+                String url = "https://wa.me/" + numeroWhatsApp + "?text=" + Uri.encode(mensaje.toString());
+
+                // Abre WhatsApp con el número y el mensaje predefinido
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+
+                // Agrega un log para imprimir que el mensaje se envió
+                Log.d("CarritoActivity", "Mensaje enviado a WhatsApp.");
+            }
+
+
+
+
         });
-    }}
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Verifica si se realizó una compra y muestra el SweetAlert
+        if (seRealizoUnaCompra) {
+            // Llama a vaciarCarrito() aquí
+            vaciarCarrito();
+            seRealizoUnaCompra = false; // Restablece la bandera
+        }
+    }
+    private void vaciarCarrito() {
+        // Limpia las listas o datos que representan el carrito
+        productosEnCarrito.clear();
+        cantidadesDeseadas.clear();
+
+        // Actualiza el adaptador del RecyclerView
+        carritoAdapter.notifyDataSetChanged();
+    }
+
+
+}

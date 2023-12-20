@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.dagnerchuman.miaplicativonegociomicroservice.R;
 import com.dagnerchuman.miaplicativonegociomicroservice.adapter.CategoriaAdapter;
@@ -35,6 +36,7 @@ public class CategoriaProductosActivity extends AppCompatActivity {
     private CategoriaAdapter adapter;
     private ImageButton btnBackToLogin, btnCarrito;
     private ConstraintLayout constraintLayout;
+    private SwipeRefreshLayout swipeRefreshLayout; // Agrega esta variable
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +47,22 @@ public class CategoriaProductosActivity extends AppCompatActivity {
         btnCarrito = findViewById(R.id.btnCarrito);
         constraintLayout = findViewById(R.id.constraintLayout);
         btnBackToLogin = findViewById(R.id.btnBackToLogin);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 
         setupRecyclerView();
         setupBackToLoginButton();
         setupCarritoButton();
         obtainAndFilterProductos();
+
+        // Configura el listener para el gesto de deslizar hacia abajo (refresh)
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Llama a la función para obtener y filtrar productos
+                obtainAndFilterProductos();
+            }
+        });
+
     }
 
     private void setupRecyclerView() {
@@ -94,7 +107,7 @@ public class CategoriaProductosActivity extends AppCompatActivity {
                         v.setX(newX);
                         v.setY(newY);
 
-                        if (Math.abs(event.getRawX() - startX) > 120 || Math.abs(event.getRawY() - startY) > 120) {
+                        if (Math.abs(event.getRawX() - startX) > 320 || Math.abs(event.getRawY() - startY) > 320) {
                             isMoving = true;
                         }
                         break;
@@ -154,11 +167,17 @@ public class CategoriaProductosActivity extends AppCompatActivity {
                 } else {
                     Log.e("API Response", "Respuesta no exitosa: " + response.code());
                 }
+
+                // Indica que la acción de refresh ha terminado
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<Producto>> call, Throwable t) {
                 Log.e("API Failure", "Fallo en la solicitud a la API", t);
+
+                // Indica que la acción de refresh ha terminado
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
