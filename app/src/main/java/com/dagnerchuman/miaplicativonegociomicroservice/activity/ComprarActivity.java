@@ -152,6 +152,7 @@ public class ComprarActivity extends AppCompatActivity implements CompraAdapter.
                 String selectedOption = radioButton != null ? radioButton.getText().toString() : "";
 
                 if ("Delivery".equals(selectedOption)) {
+                    // Muestra el SweetAlert con el costo adicional por Delivery
                     mostrarSweetAlertCostoDelivery();
                 }
             }
@@ -243,6 +244,9 @@ public class ComprarActivity extends AppCompatActivity implements CompraAdapter.
                                                         Log.i("ComprarActivity", "Datos actualizados del producto: Stock = " + updatedProducto.getStock());
 
                                                         if (updatedProducto.getStock() == stockOriginal) {
+                                                            // Calcula el nuevo precio de compra si se seleccionó "Delivery"
+                                                            calcularNuevoPrecioCompra();
+
                                                             Compra compra = new Compra();
                                                             compra.setUserId(userId);
                                                             compra.setProductoId(productoId);
@@ -251,6 +255,7 @@ public class ComprarActivity extends AppCompatActivity implements CompraAdapter.
                                                             compra.setCantidad(cantidad);
                                                             compra.setTipoEnvio(tipoEnvio);
                                                             compra.setTipoDePago(tipoDePago);
+
 
                                                             // Realiza la compra
                                                             Call<Compra> compraCall = apiServiceCompras.saveCompra(compra);
@@ -335,6 +340,15 @@ public class ComprarActivity extends AppCompatActivity implements CompraAdapter.
         } else {
             mostrarAlertaError("Ingresa la cantidad deseada");
         }
+    }
+
+    private void calcularNuevoPrecioCompra() {
+        // Verifica si la opción de "Delivery" está seleccionada
+        if ("Delivery".equals(tipoEnvio)) {
+            // Suma 2 soles al precio de compra por cada unidad deseada
+            precioCompra += (2.0 / cantidad);
+        }
+
     }
 
     // Función para mostrar una alerta de compra exitosa
@@ -534,4 +548,4 @@ public class ComprarActivity extends AppCompatActivity implements CompraAdapter.
 
 
 
-        }
+}
